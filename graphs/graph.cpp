@@ -6,6 +6,12 @@
 #include<string>
 using namespace std;
 
+class node_conn
+{
+	public:
+	node *myadd = NULL;	
+	node_conn *nexte = NULL;	
+};
 
 class node
 {
@@ -17,12 +23,6 @@ class node
 };
 
 
-class node_conn
-{
-	public:
-	node *myadd = NULL;	
-	node_conn *nexte = NULL;	
-};
 
 
 // entering the vertices 
@@ -47,23 +47,6 @@ void createnode()
 	
 	itr_node = temp;
 	count++;	
-}
-
-
-
-
-
-
-int main()
-{
-	int start,end;
-	int vertex;
-	node *itr,*temp, *temp2;
-	cout<<"#############     GRAPH     #############\n"<<endl;
-	
-	cout<<"I AM HERE\n";
-	displayall();
-	
 }
 
 
@@ -104,14 +87,16 @@ void createedge()
 			
 		else
 		{
-			for(temp_node=top_node;temp_node!=NULL;temp_node=temp_node->nextv)
-			{
-				if(edge1 == temp_node->name)
-				{
-					
-				}
-			}
+			node_conn *temp = new node_conn;
+			for(temp=temp1->nexte;temp!=NULL;temp=temp->nexte);   //creating first edge from A to B
+				temp->nexte = temp1;
 			
+			
+			node_conn *temp = new node_conn;
+			for(temp=temp2->nexte;temp!=NULL;temp=temp->nexte);  //creating 2nd edge from B to A
+				temp->nexte = temp2;
+				
+			cout<<" undirected EDGE CREATED \n";
 			
 		}
 		
@@ -129,24 +114,56 @@ void createedge()
 void displayall()
 {
 	
-	node *row, *column, *temp;
+	node *row;
+	node_conn *column;
 	
-	temp = top;
+	node *temp_col;
 	
-	//cout<<"I AM IN FUNC\n"<<endl;
-	for(row = temp; row!=NULL; row=row->v)
+	cout<<"DISPLAYING GRAPH\n";
+	for(row = top_node; row!=NULL; row=row->v)
 	{	
-		//cout<<"I AM IN FUNC row\n"<<endl;
-		for(column = row; column!=NULL; column=column->e)
+		cout<<"  "<<row->name<<"  ";
+		for(column = row->nexte; column!=NULL; column=column->e)
 		{
-			//cout<<"I AM IN FUNC coulmn\n"<<endl;
-			cout<<"   "<<column->id<<"   ";
+			temp_col = column->myadd;
+			cout<<"----->"<<temp_col->name;
 		}
-		cout<<endl;
-		
-		
-		
+		cout<<endl;	
 	}
 	
 	
+
+
+
+
+
+int main()
+{
+	int input;
+	cout<<"#############     GRAPH     #############\n"<<endl;
+	
+	while(1)
+	{
+		cout<<" 1. Create node \n 2. Create edge \n 3. Display\n 4. Exit\n";
+		cin>>input;
+		
+		if(input==4)
+		break;
+		else
+		{
+			switch(input)
+			{
+			case 1: createnode(); break;
+			case 2: createdge();break;
+			case 3: displayall();break;
+			default: cout<<"WRONG INPUT\n";
+			}
+		}
+		
+	}
+	
+	displayall();
+	
+}
+
 }

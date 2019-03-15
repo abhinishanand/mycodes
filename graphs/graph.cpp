@@ -9,7 +9,8 @@ using namespace std;
 class node_conn
 {
 	public:
-	node *myadd = NULL;	
+	int id;
+	node_conn *downv = NULL;
 	node_conn *nexte = NULL;	
 };
 
@@ -19,7 +20,6 @@ class node
 	int id;
 	string name;
 	node *nextv = NULL;	
-	node_conn *nexte = NULL;	
 };
 
 
@@ -52,15 +52,14 @@ void createnode()
 
 //entering the edges
 
-
+node_conn *firstedge=NULL;
 void createedge()
 {
 	node *temp_node;
 	
 	
 	string edge1,edge2;
-	node *temp1=NULL;
-	node *temp2=NULL;
+	int id1=0,id2=0;
 	
 	cout<<"ENTER THE EDGE NAME (a b)\n";
 	cin>>edge1;
@@ -73,30 +72,52 @@ void createedge()
 		for(temp_node=top_node;temp_node!=NULL;temp_node=temp_node->nextv)
 		{
 			if(temp_node->name == edge1)
-				temp1 = temp_node;
+				id1 = temp_node->id;
+				
 			if(temp_node->name == edge2)
-				temp2 = temp_node;
+				id2 = temp_node->id;
 				
 		}
 		
-		if(temp1==NULL)
-			cout<<edge1<<" doesn't exist.\n";
+		if(id1==0)
+			cout<<"VERTEX "<<edge1<<" doesn't exist.\n";
 		
-		else if(temp2==NULL)
-			cout<<edge2<<" doesn't exist.\n";
+		else if(id2==0)
+			cout<<"VERTEX "<<edge2<<" doesn't exist.\n";
 			
 		else
 		{
-			node_conn *temp = new node_conn;
-			for(temp=temp1->nexte;temp!=NULL;temp=temp->nexte);   //creating first edge from A to B
-				temp->nexte = temp1;
-			
-			
-			node_conn *temp = new node_conn;
-			for(temp=temp2->nexte;temp!=NULL;temp=temp->nexte);  //creating 2nd edge from B to A
-				temp->nexte = temp2;
+			if(firstedge==NULL)
+			{
 				
-			cout<<" undirected EDGE CREATED \n";
+				node_conn *temp2= new node_conn;
+				temp2->id = id2;
+				
+				node_conn *temp1= new node_conn;
+				temp1->id = id1;
+				temp1->nexte = temp2;
+				
+				firstedge = temp1;	
+				
+			}
+			else
+			{
+				//two cases
+				//case1 : when the first edge is existing
+				//case2 : when the first edge doesnt exist
+				//need to search first whether there is first edge or not
+				
+				for(node_conn *temp = firstedge; temp->downv!=NULL; temp=temp->downv)
+				{
+					
+					
+				}
+				
+				
+				
+			}
+			
+			
 			
 		}
 		
